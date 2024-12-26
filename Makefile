@@ -1,5 +1,15 @@
 TAG = "MAKE"
 
+.PHONY: open
+open:
+	@ echo ""
+	@ echo ""
+	@ echo "[$(TAG)] ($(shell date '+%H:%M:%S')) - Open service UI"
+	@ open http://localhost:8080; # Kafka UI
+	@ open http://localhost:9001; # Minio UI
+	@ open http://localhost:8081; # Flink UI
+	@ echo ""
+
 .PHONY: compose
 compose:
 	docker compose \
