@@ -11,7 +11,7 @@ import org.apache.flink.table.api.bridge.java.StreamTableEnvironment
 
 private val logger = KotlinLogging.logger {}
 
-class FlinkKafkaToKafka : ExecutionBase {
+class StreamSqlKafkaToKafka : ExecutionBase {
 
     companion object {
         @JvmStatic

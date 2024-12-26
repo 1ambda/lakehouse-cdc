@@ -11,18 +11,12 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>flink-sql-kafka</artifactId>
+  <artifactId>module-common</artifactId>
 
   <properties>
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>com.github.lambda.lakehouse</groupId>
-      <artifactId>flink-common</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>
 
     <dependency>
       <groupId>org.apache.flink</groupId>

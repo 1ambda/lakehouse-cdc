@@ -10,10 +10,8 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>flink-common</module>
-    <module>flink-sql-kafka</module>
-<!--    <module>flink-sql-parquet</module>-->
-<!--    <module>flink-sql-iceberg</module>-->
+    <module>module-common</module>
+    <module>module-stream-sql-kafka2kafka</module>
   </modules>
 
   <properties>
