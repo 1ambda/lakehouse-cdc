@@ -2,7 +2,27 @@ TAG = "MAKE"
 
 .PHONY: compose
 compose:
-	docker compose -f docker-compose.yaml up
+	docker compose \
+		-f docker-compose.cdc.yaml \
+		-f docker-compose.storage.yaml \
+		up
+
+.PHONY: compose.cdc
+compose.cdc:
+	docker compose \
+		-f docker-compose.cdc.yaml \
+		up
+
+.PHONY: compose.clean
+compose.clean:
+	@ echo ""
+	@ echo ""
+	@ echo "[$(TAG)] ($(shell date '+%H:%M:%S')) - Cleaning container volumes ('docker/volume')"
+	@ rm -rf docker/volume
+	@ docker container prune -f
+	@ docker volume prune -f
+	@ echo ""
+	@ echo ""
 
 .PHONY: connect.create
 connect.create:
