@@ -1,4 +1,5 @@
 # Local Configuration for Flink
+rest.port: 8081
 state.backend.type: rocksdb
 
 execution.checkpointing.mode: EXACTLY_ONCE

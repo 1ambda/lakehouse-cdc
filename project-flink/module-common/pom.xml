@@ -85,6 +85,13 @@
       <version>${dep.version.kafka}</version>
     </dependency>
 
+    <!-- Storage Dependency -->
+    <dependency>
+      <groupId>org.apache.iceberg</groupId>
+      <artifactId>iceberg-flink-runtime-${dep.version.flinkShort}</artifactId>
+      <version>${dep.version.iceberg}</version>
+    </dependency>
+
     <!-- Parquet Dependency -->
     <dependency>
       <groupId>org.apache.flink</groupId>

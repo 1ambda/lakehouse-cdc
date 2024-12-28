@@ -1,10 +1,15 @@
 package com.github.lambda.lakehouse.common;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.configuration.GlobalConfiguration;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.iceberg.catalog.TableIdentifier;
+import org.apache.iceberg.flink.CatalogLoader;
+import org.apache.iceberg.flink.TableLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,4 +56,27 @@ public abstract class ExecutionBase {
   public static void configureParameters(ParameterTool parameter, StreamExecutionEnvironment env) {
     env.setParallelism(parameter.getInt("default.parallelism", 1));
   }
+
+  public static TableLoader getIcebergTableLoader(ParameterTool params, String paramKey) {
+    CatalogLoader catalogLoader = getIcebergCatalogLoader(params);
+    TableLoader tableLoader = TableLoader.fromCatalog(catalogLoader,
+        TableIdentifier.of(params.get(paramKey).split("\\.")[0],
+            params.get(paramKey).split("\\.")[1]));
+    return tableLoader;
+  }
+
+  public static CatalogLoader getIcebergCatalogLoader(ParameterTool params) {
+    Map<String, String> properties = new HashMap<>();
+    properties.put("type", "iceberg");
+    properties.put("catalog-type", "hive");
+    properties.put("property-version", "1");
+    properties.put("uri", params.get("application.hms.uri"));
+    properties.put("warehouse", params.get("application.hms.warehouse"));
+    String catalogName = params.get("application.hms.catalog");
+
+    CatalogLoader loader = CatalogLoader.hive(catalogName,
+        new org.apache.hadoop.conf.Configuration(), properties);
+    return loader;
+  }
+
 }
