@@ -7,11 +7,11 @@
   <parent>
     <groupId>com.github.lambda.lakehouse</groupId>
     <artifactId>project-flink</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>${revision}</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>module-stream-sql-kafka2kafka</artifactId>
+  <artifactId>module-stream-kafka2kafka</artifactId>
 
   <properties>
   </properties>
@@ -54,7 +54,14 @@
 
     <dependency>
       <groupId>org.apache.flink</groupId>
-      <artifactId>flink-table-planner_2.12</artifactId>
+      <artifactId>flink-table-api-java-bridge</artifactId>
+      <version>${dep.version.flink}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-table-planner_${dep.version.scala}</artifactId>
       <version>${dep.version.flink}</version>
     </dependency>
 
@@ -89,6 +96,13 @@
       <groupId>org.apache.kafka</groupId>
       <artifactId>kafka-clients</artifactId>
       <version>${dep.version.kafka}</version>
+    </dependency>
+
+    <!-- Storage Dependency -->
+    <dependency>
+      <groupId>org.apache.iceberg</groupId>
+      <artifactId>iceberg-flink-runtime-${dep.version.flinkShort}</artifactId>
+      <version>1.7.1</version>
     </dependency>
 
     <!-- Parquet Dependency -->
@@ -173,7 +187,7 @@
     <!-- Hive Dependency -->
     <dependency>
       <groupId>org.apache.flink</groupId>
-      <artifactId>flink-connector-hive_2.12</artifactId>
+      <artifactId>flink-connector-hive_${dep.version.scala}</artifactId>
       <version>${dep.version.flink}</version>
       <scope>provided</scope>
     </dependency>
@@ -193,46 +207,12 @@
   </dependencies>
 
   <build>
-    <sourceDirectory>src/main/kotlin</sourceDirectory>
-    <testSourceDirectory>src/test/kotlin</testSourceDirectory>
-
     <plugins>
-      <plugin>
-        <groupId>org.jetbrains.kotlin</groupId>
-        <artifactId>kotlin-maven-plugin</artifactId>
-        <version>${kotlin.version}</version>
-        <executions>
-          <execution>
-            <id>compile</id>
-            <phase>process-sources</phase>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-            <configuration>
-              <sourceDirs>src/main/kotlin</sourceDirs>
-            </configuration>
-          </execution>
-          <execution>
-            <id>test-compile</id>
-            <phase>test-compile</phase>
-            <goals>
-              <goal>test-compile</goal>
-            </goals>
-            <configuration>
-              <sourceDirs>src/test/kotlin</sourceDirs>
-            </configuration>
-          </execution>
-        </executions>
-        <configuration>
-          <jvmTarget>${java.version}</jvmTarget>
-        </configuration>
-      </plugin>
-
       <!-- The maven-shade plugin creates a fat jar that contains all dependencies. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.4.1</version>
+        <version>${plugin.version.maven.shade}</version>
         <configuration>
           <shadedArtifactAttached>true</shadedArtifactAttached>
           <shadedClassifierName>combined</shadedClassifierName>
@@ -243,6 +223,28 @@
             <goals>
               <goal>shade</goal>
             </goals>
+            <configuration>
+              <artifactSet>
+                <excludes>
+                  <exclude>org.apache.flink:flink-shaded-force-shading</exclude>
+                  <exclude>com.google.code.findbugs:jsr305</exclude>
+                  <exclude>org.slf4j:*</exclude>
+                  <exclude>org.apache.logging.log4j:*</exclude>
+                </excludes>
+              </artifactSet>
+              <filters>
+                <filter>
+                  <!-- Do not copy the signatures in the META-INF folder.
+                  Otherwise, this might cause SecurityExceptions when using the JAR. -->
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -250,8 +252,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>8</source>
-          <target>8</target>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
         </configuration>
       </plugin>
     </plugins>

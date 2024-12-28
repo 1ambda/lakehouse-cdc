@@ -6,17 +6,17 @@
 
   <groupId>com.github.lambda.lakehouse</groupId>
   <artifactId>project-flink</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>${revision}</version>
   <packaging>pom</packaging>
 
   <modules>
     <module>module-common</module>
-    <module>module-stream-sql-kafka2kafka</module>
+    <module>module-stream-kafka2kafka</module>
   </modules>
 
   <properties>
+    <revision>1.0-SNAPSHOT</revision>
     <java.version>11</java.version>
-    <kotlin.version>2.1.0</kotlin.version>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
 
@@ -25,15 +25,17 @@
 
     <dep.version.flink>1.20.0</dep.version.flink>
     <dep.version.flinkShort>1.20</dep.version.flinkShort>
+    <dep.version.scala>2.12</dep.version.scala>
     <dep.version.iceberg>1.7.1</dep.version.iceberg>
     <dep.version.kafka>3.4.0</dep.version.kafka>
-    <dep.version.hadoop>3.3.1</dep.version.hadoop>
+    <dep.version.hadoop>3.3.2</dep.version.hadoop>
     <dep.version.hive>3.1.2</dep.version.hive>
-    <dep.version.awssdk>2.20.18</dep.version.awssdk>
+    <dep.version.awssdk>2.29.42</dep.version.awssdk>
 
     <dep.version.slf4j>2.0.16</dep.version.slf4j>
     <dep.version.log4j>2.24.3</dep.version.log4j>
-    <dep.version.kotlinlogging>5.1.0</dep.version.kotlinlogging>
+
+    <plugin.version.maven.shade>3.4.1</plugin.version.maven.shade>
 
     <checkstyle.violation.ignore>
       NonEmptyAtclauseDescription,
@@ -44,32 +46,6 @@
   </properties>
 
   <dependencies>
-    <!-- Kotlin Dependency -->
-    <dependency>
-      <groupId>org.jetbrains.kotlin</groupId>
-      <artifactId>kotlin-stdlib</artifactId>
-      <version>${kotlin.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.jetbrains.kotlin</groupId>
-      <artifactId>kotlin-reflect</artifactId>
-      <version>${kotlin.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.jetbrains.kotlin</groupId>
-      <artifactId>kotlin-test</artifactId>
-      <version>${kotlin.version}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>io.github.oshai</groupId>
-      <artifactId>kotlin-logging-jvm</artifactId>
-      <version>${dep.version.kotlinlogging}</version>
-    </dependency>
-
     <!-- Flink Core Dependency -->
     <dependency>
       <groupId>org.apache.flink</groupId>
