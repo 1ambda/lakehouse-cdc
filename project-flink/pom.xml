@@ -11,6 +11,8 @@
 
   <modules>
     <module>module-common</module>
+    <module>module-stream-iceberg2iceberg</module>
+    <module>module-stream-kafka2iceberg</module>
     <module>module-stream-kafka2kafka</module>
   </modules>
 

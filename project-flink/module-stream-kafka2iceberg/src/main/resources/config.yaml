@@ -1,0 +1,15 @@
+# Local Configuration for Flink
+state.backend.type: rocksdb
+
+execution.checkpointing.mode: EXACTLY_ONCE
+execution.checkpointing.incremental: true
+execution.checkpointing.interval: 30s
+execution.checkpointing.min-pause: 5s
+execution.checkpointing.timeout: 60s
+execution.checkpointing.max-concurrent-checkpoints: 1
+
+execution.checkpointing.unaligned.enabled: false
+
+execution.checkpointing.num-retained: 1
+execution.checkpointing.dir: file:///tmp/checkpoints
+execution.checkpointing.savepoint-dir: file:///tmp/savepoints

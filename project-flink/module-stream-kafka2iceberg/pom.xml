@@ -11,7 +11,7 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>module-stream-kafka2kafka</artifactId>
+  <artifactId>module-stream-kafka2iceberg</artifactId>
 
   <properties>
   </properties>
