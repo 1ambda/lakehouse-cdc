@@ -79,7 +79,7 @@ services:
       S3_SECRET_KEY: minio123
       S3_PATH_STYLE_ACCESS: "true"
       HIVE_METASTORE_USERS_IN_ADMIN_ROLE: "admin"
-      REGION: ""
+      REGION: "us-east-1"
       GOOGLE_CLOUD_KEY_FILE_PATH: ""
       AZURE_ADL_CLIENT_ID: ""
       AZURE_ADL_CREDENTIAL: ""
@@ -96,3 +96,21 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+
+  ####################################################################################################
+  # Query Engine
+  ####################################################################################################
+  trino:
+    container_name: trino
+    hostname: trino
+    ports:
+      - "8889:8080"
+    image: "trinodb/trino:468"
+    volumes:
+      - ./_docker/trino/etc:/usr/lib/trino/etc:ro
+      - ./_docker/trino/catalog:/etc/trino/catalog
+    environment:
+      REGION: "us-east-1"
+      AWS_REGION: "us-east-1"
+    depends_on:
+      - hive-metastore

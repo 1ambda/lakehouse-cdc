@@ -7,6 +7,7 @@ open:
 	@ echo "[$(TAG)] ($(shell date '+%H:%M:%S')) - Open service UI"
 	@ open http://localhost:8080; # Kafka UI
 	@ open http://localhost:9001; # Minio UI
+	@ open http://localhost:8889; # Trino UI
 	@ open http://localhost:8081; # Flink UI
 	@ echo ""
 
@@ -45,4 +46,18 @@ connect.create:
 connect.check:
 	curl --location --request GET 'localhost:8083/connector-plugins' | jq
 
+.PHONY: trino.cli
+trino.cli:
+	trino --server http://localhost:8889
 
+.PHONY: trino.shell
+trino.shell:
+	docker exec -w /etc/trino -it trino /bin/bash
+
+.PHONY: trino.init
+trino.init:
+	@ echo ""
+	@ echo "[$(TAG)] ($(shell date '+%H:%M:%S')) - Creating trino schemas"
+	@ echo ""
+	@ trino --server http://localhost:8889 --file _script/trino.init-schema.sql;
+	@ echo ""
